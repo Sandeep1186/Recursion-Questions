@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void generateStringUtil(int N, string& current, vector<string>& result) {
+void generateStringHelper(int N, string& current, vector<string>& result) {
     if (N == 0) {
         result.push_back(current);
         return;
@@ -26,6 +26,6 @@ void generateStringUtil(int N, string& current, vector<string>& result) {
 vector<string> generateString(int N) {
     vector<string> result;
     string current;
-    generateStringUtil(N, current, result);
+    generateStringHelper(N, current, result);
     return result;
 }
