@@ -29,3 +29,15 @@ vector<string> generateString(int N) {
     generateStringHelper(N, current, result);
     return result;
 }
+int main() {
+    int N;
+    cout << "Enter the value of N: ";
+    cin >> N;
+
+    vector<string> strings = generateString(N);
+
+    // Display the generated strings
+    for (const string& str : strings) {
+        cout << str << endl;
+    }
+}
