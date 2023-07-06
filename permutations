@@ -1,0 +1,28 @@
+void swapChars(string &s, int i, int j) {
+    char temp = s[i];
+    s[i] = s[j];
+    s[j] = temp;
+}
+
+void generatePermutationsHelper(string &s, int startIndex, int endIndex, vector<string> &result) {
+    if (startIndex >= endIndex) {
+        string permutation = "";
+        for (int k = 0; k < s.length(); k++) {
+            permutation += s[k];
+        }
+        result.push_back(permutation);
+        return;
+    }
+
+    for (int k = startIndex; k <= endIndex; k++) {
+        swapChars(s, startIndex, k);
+        generatePermutationsHelper(s, startIndex + 1, endIndex, result);
+        swapChars(s, startIndex, k);
+    }
+}
+
+vector<string> findPermutations(string &s) {
+    vector<string> result;
+    generatePermutationsHelper(s, 0, s.length() - 1, result);
+    return result;
+}
