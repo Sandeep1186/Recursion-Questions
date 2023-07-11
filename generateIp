@@ -1,0 +1,60 @@
+#include <algorithm>
+#include <vector>
+#include <string>
+
+bool isValidSegment(string& segment) {
+    int length = segment.size();
+    if (segment[0] == '0' && length != 1) {
+        return false;
+    }
+
+    if (length > 3) {
+        return false;
+    }
+
+    int number = 0, base = 1;
+    for (int i = length - 1; i >= 0; i--) {
+        int digit = segment[i] - '0';
+        number += (digit * base);
+        base *= 10;
+    }
+
+    return (number >= 0 && number <= 255);
+}
+
+int getLength(const string& str) {
+    return str.size();
+}
+
+void generateIPAddresses(const string& input, vector<string>& result, vector<string>& segments, int curIndex, int segmentIndex) {
+    if (curIndex == getLength(input) && segmentIndex == 4) {
+        string ip = segments[0] + "." + segments[1] + "." + segments[2] + "." + segments[3];
+        result.push_back(ip);
+        return;
+    }
+
+    if (segmentIndex == 4 || curIndex == getLength(input)) {
+        return;
+    }
+
+    string currentSegment = "";
+
+    for (int steps = 0; (steps <= 2) && (steps + curIndex < getLength(input)); steps++) {
+        currentSegment.push_back(input[curIndex + steps]);
+
+        if (!isValidSegment(currentSegment)) {
+            continue;
+        }
+
+        segments[segmentIndex] = currentSegment;
+        generateIPAddresses(input, result, segments, curIndex + steps + 1, segmentIndex + 1);
+    }
+}
+
+vector<string> generateIPAddress(const string& input) {
+    vector<string> result, segments(4);
+    int n = getLength(input);
+    generateIPAddresses(input, result, segments, 0, 0);
+    sort(result.begin(), result.end());
+    return result;
+}
