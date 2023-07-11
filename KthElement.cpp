@@ -1,77 +1,32 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h> 
+int findKthElementRecursive(vector<int>& arr1, vector<int>& arr2, int start1, int start2, int k) {
+    // Base cases
+    if (start1 >= arr1.size()) {
+        return arr2[start2 + k - 1];
+    }
+    if (start2 >= arr2.size()) {
+        return arr1[start1 + k - 1];
+    }
+    if (k == 1) {
+        return min(arr1[start1], arr2[start2]);
+    }
 
-using namespace std;
+    // Recursive cases
+    int mid1 = start1 + k / 2 - 1;
+    int mid2 = start2 + k / 2 - 1;
+    int val1 = mid1 < arr1.size() ? arr1[mid1] : INT_MAX;
+    int val2 = mid2 < arr2.size() ? arr2[mid2] : INT_MAX;
 
+    if (val1 <= val2) {
+        return findKthElementRecursive(arr1, arr2, mid1 + 1, start2, k - k / 2);
+    } else {
+        return findKthElementRecursive(arr1, arr2, start1, mid2 + 1, k - k / 2);
+    }
+}
 int findKthElement(vector<int>& arr1, vector<int>& arr2, int k) {
     int m = arr1.size();
     int n = arr2.size();
-    int i = 0;
-    int j = 0;
-    int count = 0;
-    int kthElement;
-
-    while (i < m && j < n) {
-        if (arr1[i] < arr2[j]) {
-            count++;
-            if (count == k) {
-                kthElement = arr1[i];
-                break;
-            }
-            i++;
-        } else {
-            count++;
-            if (count == k) {
-                kthElement = arr2[j];
-                break;
-            }
-            j++;
-        }
-    }
-
-    while (i < m) {
-        count++;
-        if (count == k) {
-            kthElement = arr1[i];
-            break;
-        }
-        i++;
-    }
-
-    while (j < n) {
-        count++;
-        if (count == k) {
-            kthElement = arr2[j];
-            break;
-        }
-        j++;
-    }
-
-    return kthElement;
+    return findKthElementRecursive(arr1, arr2, 0, 0, k);
 }
 
-int main() {
-    int n1, n2, k;
-    cout << "Enter the number of elements in array 1: ";
-    cin >> n1;
-    cout << "Enter the elements of array 1 in sorted order: ";
-    vector<int> arr1(n1);
-    for (int i = 0; i < n1; i++) {
-        cin >> arr1[i];
-    }
 
-    cout << "Enter the number of elements in array 2: ";
-    cin >> n2;
-    cout << "Enter the elements of array 2 in sorted order: ";
-    vector<int> arr2(n2);
-    for (int i = 0; i < n2; i++) {
-        cin >> arr2[i];
-    }
-
-    cout << "Enter the value of k: ";
-    cin >> k;
-
-    int kthElement = findKthElement(arr1, arr2, k);
-
-    cout << "The kth element is: " << kthElement << endl;
-}
